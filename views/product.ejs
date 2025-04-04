@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Bán Hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .contact-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease-in-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .form-control:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
+        }
+        .btn-primary {
+            background: #ff6600;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+        }
+        .nav-link {
+            transition: color 0.3s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #ff6600 !important;
+        }
+        .footer {
+            background-color: #FF5700;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/">Lazy</a>
+            <link rel="stylesheet" href="/product.css">
+        </div> 
+        
+        <nav>
+            <ul>
+                <li><a href="/about">Giới thiệu</a></li>
+                <li><a href="/product">Sản phẩm</a></li>
+                <li><a href="/chiase">Kinh nghiệm hay</a></li>
+                <li><a href="/contact">Liên hệ</a></li>
+            </ul>
+        </nav>
+        <div class="user-actions">
+            <% if (session && session.user) { %>     
+                <div class="user-menu">
+                    <span id="username"><%= session.user ? session.user.username : 'Khách' %></span>
+                    <ul id="user-options" class="hidden">
+                        <li><a href="/logout">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <a href="/auth/login">Đăng nhập</a> /
+                <a href="/auth/register">Đăng ký</a>
+            <% } %>
+            <a href="/cart">Giỏ hàng</a>
+        </div>
+    </header>
+    
+    <main>
+        <div class="sidebar">
+            <h3>Danh mục sản phẩm</h3>
+            <ul>
+                <li><a href="/phones">Điện thoại</a></li>
+                <li><a href="/laptops">Laptop</a></li>
+                <li><a href="/tablets">Tablet</a></li>
+                <li><a href="/accessories">Phụ kiện</a></li>
+                <li><a href="#">Smartwatch</a></li>
+                <li><a href="#">Apple Watch</a></li>
+                <li><a href="#">Thiết bị văn phòng</a></li>
+                <li><a href="#">Máy tính bộ</a></li>
+                <li><a href="#">Tai nghe</a></li>
+            </ul>
+        </div>
+
+        <div class="banner-container">
+            <div class="banner-side left">
+                <img src="/images/banner1.png" alt="Hình bên trái 1">
+                <img src="/images/banner2.png" alt="Hình bên trái 2">
+            </div>
+
+            <div class="banner">
+                <img src="/images/banner.png" alt="Banner quảng cáo">
+            </div>
+
+            <div class="banner-side right">
+                <img src="/images/banner3.png" alt="Hình bên phải 1">
+                <img src="/images/banner4.png" alt="Hình bên phải 2">
+            </div>
+        </div>
+
+        <div class="products">
+            <h2>Trend</h2>
+            <div class="trend-container">
+                <div class="trend-product">
+                    <img src="/images/product1.png" alt="Sản phẩm 1">
+                    <p>Điện thoại iPhone 15 Pro Max</p>
+                    <p>Giá: 30,000,000đ</p>
+                </div>
+                <div class="trend-product">
+                    <img src="/images/product2.png" alt="Sản phẩm 2">
+                    <p>Samsung Galaxy S23 Ultra</p>
+                    <p>Giá: 28,000,000đ</p>
+                </div>
+                <div class="trend-product">
+                    <img src="/images/product3.png" alt="Sản phẩm 3">
+                    <p>iPad Air 6 M2 11 inch Wifi 128GB</p>
+                    <p>Giá: 16,000,000đ</p>
+                </div>
+                <div class="trend-product">
+                    <img src="/images/product4.png" alt="Sản phẩm 4">
+                    <p>Laptop Lenovo LOQ 15IAX9 83GS001RVN</p>
+                    <p>Giá: 21,000,000đ</p>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; LazyIT - 2025</p>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const username = document.querySelector("#username");
+    const userOptions = document.querySelector("#user-options");
+
+    if (username && userOptions) {
+        username.addEventListener("click", function (event) {
+            event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài
+            userOptions.classList.toggle("show"); // Thêm hoặc gỡ class 'show'
+        });
+
+        // Ẩn menu khi click ra ngoài
+        document.addEventListener("click", function (event) {
+            if (!username.contains(event.target) && !userOptions.contains(event.target)) {
+                userOptions.classList.remove("show");
+            }
+        });
+    }
+});
+
+
+    </script>
+</body>
+
+
+</html>

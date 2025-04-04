@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinh nghiệm hay - Lazy</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .btn-primary {
+            background: #ff6600;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+        }
+        .footer {
+            background-color: #FF5700;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="text-white p-3 shadow-sm" style="background-color: #FF5700;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="text-white text-decoration-none fs-4 fw-bold">LAZY</a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="/about" class="nav-link text-white fs-5">Giới thiệu</a></li>
+                    <li class="nav-item"><a href="/products" class="nav-link text-white fs-5">Sản phẩm</a></li>
+                    <li class="nav-item"><a href="/chiase" class="nav-link text-white fs-5">Kinh nghiệm hay</a></li>
+                    <li class="nav-item"><a href="/contact" class="nav-link text-white fs-5">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div>
+                <div class="user-actions">
+                    <div class="d-flex align-items-center">
+                        <% if (session && session.user) { %>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> <%= session.user.username %>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/profile"><i class="fas fa-user-circle"></i> Hồ sơ</a></li>
+                                    <li><a class="dropdown-item" href="/orders"><i class="fas fa-box"></i> Đơn hàng</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        <% } else { %>
+                            <a href="/auth/login" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                            <a href="/auth/register" class="btn btn-warning"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                        <% } %>
+
+                        <a href="/cart" class="btn btn-light ms-3 position-relative">
+                            <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <%= session.cart ? session.cart.length : 0 %>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid mt-5">
+        <h2 class="text-center text-primary" style="color: aqua;">Kinh nghiệm hay</h2>
+        <p class="text-center">Chia sẻ thông tin hữu ích về mua sắm sản phẩm điện tử.</p>
+
+        <hr class="w-50 mx-auto">
+
+        <div class="px-5">
+            <div class="article">
+                <h3 class="text-success">Kinh nghiệm mua laptop</h3>
+                <p>
+                    * Xác định nhu cầu sử dụng: Bạn cần laptop để làm gì? (Văn phòng, đồ họa, chơi game, v.v.)<br>
+                    * Chọn cấu hình phù hợp: CPU, RAM, ổ cứng, card đồ họa.<br>
+                    * Thương hiệu uy tín: Dell, HP, Lenovo, Asus, Apple.<br>
+                    * Ngân sách: Xác định số tiền bạn có thể chi trả.<br>
+                    * Tham khảo đánh giá: Đọc các bài đánh giá từ người dùng và chuyên gia.
+                </p>
+            </div>
+
+            <div class="article mt-4">
+                <h3 class="text-danger">Kinh nghiệm mua điện thoại</h3>
+                <p>
+                    * Hệ điều hành: Android hay iOS?<br>
+                    * Tính năng: Camera, hiệu năng, pin, màn hình.<br>
+                    * Thương hiệu: Samsung, Apple, Xiaomi, Oppo, Realme.<br>
+                    * Ngân sách: Điện thoại có nhiều phân khúc giá khác nhau.<br>
+                    * Mua ở cửa hàng uy tín: Tránh mua hàng giả, hàng nhái.
+                </p>
+            </div>
+
+            <div class="article mt-4">
+                <h3 class="text-primary">Kinh nghiệm mua sản phẩm điện tử khác</h3>
+                <p>
+                    * Tìm hiểu kỹ thông tin sản phẩm: Đọc hướng dẫn sử dụng, đánh giá.<br>
+                    * So sánh giá cả: Mua ở nơi có giá tốt nhất.<br>
+                    * Chế độ bảo hành: Chọn sản phẩm có bảo hành tốt.<br>
+                    * Mua ở cửa hàng có uy tín: Đảm bảo chất lượng sản phẩm.<br>
+                    * Tham khảo ý kiến người thân, bạn bè: Những người đã sử dụng sản phẩm.
+                </p>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="/products" class="btn btn-primary px-4"><i class="fas fa-shopping-cart"></i> Xem sản phẩm</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5 py-4 text-white">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">LazyIT</h5>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Điều hướng</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="footer-link">Giới thiệu</a></li>
+                        <li><a href="/products" class="footer-link">Sản phẩm</a></li>
+                        <li><a href="/chiase" class="footer-link">Kinh nghiệm hay</a></li>
+                        <li><a href="/contact" class="footer-link">Liên hệ</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Liên hệ</h5>
+                    <p><i class="fas fa-envelope"></i> support@lazyit.com</p>
+                    <p><i class="fas fa-phone"></i> 0987 654 321</p>
+                    <div class="social-icons">
+                        <a href="#" class="

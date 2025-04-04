@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Bán Hàng - Điện Thoại</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .btn-primary {
+            background: #ff6600;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+        }
+        .footer {
+            background-color: #FF5700;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <!-- 🔹 HEADER -->
+    <header class="text-white p-3 shadow-sm" style="background-color: #FF5700;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="text-white text-decoration-none fs-4 fw-bold">LAZY</a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="/about" class="nav-link text-white fs-5">Giới thiệu</a></li>
+                    <li class="nav-item"><a href="/products" class="nav-link text-white fs-5">Sản phẩm</a></li>
+                    <li class="nav-item"><a href="/chiase" class="nav-link text-white fs-5">Kinh nghiệm hay</a></li>
+                    <li class="nav-item"><a href="/contact" class="nav-link text-white fs-5">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div>
+
+                <div class="user-actions">
+                    <div class="d-flex align-items-center">
+                        <% if (session && session.user) { %>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> <%= session.user.username %>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/profile"><i class="fas fa-user-circle"></i> Hồ sơ</a></li>
+                                    <li><a class="dropdown-item" href="/orders"><i class="fas fa-box"></i> Đơn hàng</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        <% } else { %>
+                            <a href="/auth/login" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                            <a href="/auth/register" class="btn btn-warning"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                        <% } %>
+                        
+                        <a href="/cart" class="btn btn-light ms-3 position-relative">
+                            <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <%= session.cart ? session.cart.length : 0 %>
+                            </span>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+   
+    
+    <main class="phone-main container mt-4"> 
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <h3 class="fw-bold text-orange">Danh mục sản phẩm</h3>
+                <ul class="list-group shadow-sm rounded">
+                    <li class="list-group-item list-group-item-action"><a href="/phones" class="text-dark text-decoration-none">Điện thoại</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="laptops" class="text-dark text-decoration-none">Laptop</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="/tablet" class="text-dark text-decoration-none">Tablet</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="/accessories" class="text-dark text-decoration-none">Phụ kiện</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="#" class="text-dark text-decoration-none">Smartwatch</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="#" class="text-dark text-decoration-none">Apple Watch</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="#" class="text-dark text-decoration-none">Thiết bị văn phòng</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="#" class="text-dark text-decoration-none">Máy tính bộ</a></li>
+                    <li class="list-group-item list-group-item-action"><a href="#" class="text-dark text-decoration-none">Tai nghe</a></li>
+                </ul>
+            </div>
+            
+
+            <!-- Product List -->
+            <div class="col-md-9">
+                <h2>Các sản phẩm điện thoại</h2>
+                <div class="row">
+                    <% products.forEach(product => { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= product.name %></h5>
+                                    <p class="card-text"><%= product.price %> VNĐ</p>
+                                    <p class="card-text"><%= product.description %></p>
+                                    <a href="/phones/product-detail/<%= product.id %>" class="btn btn-primary">Chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+     <!-- Footer -->
+<footer class="footer mt-5 py-4 text-white">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            <!-- Cột 1: Logo và giới thiệu -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">LazyIT</h5>
+                
+            </div>
+
+            <!-- Cột 2: Điều hướng -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">Điều hướng</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/about" class="footer-link">Giới thiệu</a></li>
+                    <li><a href="/product" class="footer-link">Sản phẩm</a></li>
+                    <li><a href="#" class="footer-link">Kinh nghiệm hay</a></li>
+                    <li><a href="/contact" class="footer-link">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Cột 3: Liên hệ & Mạng xã hội -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">Liên hệ</h5>
+                <p><i class="fas fa-envelope"></i> support@lazyit.com</p>
+                <p><i class="fas fa-phone"></i> 0987 654 321</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-3 border-light">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 LazyIT - Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Màu nền gradient */
+    .footer {
+        background: linear-gradient(45deg, #FF5700, #FF8C00);
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Link footer có hiệu ứng khi hover */
+    .footer-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .footer-link:hover {
+        text-decoration: underline;
+        color: #FFD700; /* Màu vàng sáng */
+        letter-spacing: 1px;
+    }
+
+    /* Hiệu ứng icon mạng xã hội */
+    .social-icons {
+        margin-top: 10px;
+    }
+
+    .social-icon {
+        color: white;
+        margin-right: 15px;
+        font-size: 24px;
+        transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: scale(1.3) rotate(10deg);
+        color: #FFD700; /* Màu vàng nổi bật */
+        text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+    }
+</style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

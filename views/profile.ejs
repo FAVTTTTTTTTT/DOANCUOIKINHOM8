@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <style>
+    /* Định dạng chung */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Container hồ sơ */
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Tiêu đề */
+    h2 {
+        color: #333;
+    }
+
+    /* Thông tin cá nhân */
+    .profile-info p {
+        font-size: 18px;
+        color: #555;
+        margin: 10px 0;
+    }
+
+    /* Các nút */
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 10px 5px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Nút chỉnh sửa */
+    .btn-edit {
+        background-color: #28a745;
+    }
+
+    /* Nút đăng xuất */
+    .btn-logout {
+        background-color: #dc3545;
+    }
+
+    /* Nút quay lại */
+    .btn-back {
+        background-color: #007bff;
+        display: block;
+        width: 150px;
+        margin: 20px auto;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Hồ Sơ Cá Nhân</h2>
+    <div class="profile-info">
+      <p><strong>Tên người dùng:</strong> <%= user.username %></p>
+      <p><strong>Email:</strong> <%= user.email %></p>
+      <p><strong>Số điện thoại:</strong> <%= user.phone %></p>
+    </div>
+
+    <a href="/profile/edit" class="btn btn-edit">Chỉnh sửa hồ sơ</a>
+    <a href="/logout" class="btn btn-logout">Đăng xuất</a>
+    <a href="/products" class="btn btn-back">Quay lại</a>
+  </div>
+
+</body>
+</html>

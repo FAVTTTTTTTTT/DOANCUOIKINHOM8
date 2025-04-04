@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên hệ với chúng tôi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .contact-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease-in-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .form-control:focus {
+            border-color: #ff6600;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.3);
+        }
+        .btn-primary {
+            background: #ff6600;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            background: #e65c00;
+            transform: scale(1.05);
+        }
+        .nav-link {
+            transition: color 0.3s ease-in-out;
+        }
+        .nav-link:hover {
+            color: #ff6600 !important;
+        }
+        .footer {
+            background-color: #FF5700;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="text-white p-3 shadow-sm" style="background-color: #FF5700;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="text-white text-decoration-none fs-4 fw-bold">LAZY</a>
+            <a href="/" class="text-white text-decoration-none fs-4 fw-bold"></a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="/about" class="nav-link text-white" style="font-size: 18px;">Giới thiệu</a></li>
+                    <li class="nav-item"><a href="/product" class="nav-link text-white" style="font-size: 18px;" >Sản phẩm</a></li>
+                    <li class="nav-item"><a href="/chiase" class="nav-link text-white" style="font-size: 18px;">Kinh nghiệm hay</a></li>
+                    <li class="nav-item"><a href="/contact" class="nav-link text-white" style="font-size: 18px;">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div>
+                <div class="d-flex align-items-center">
+                    <% if (session && session.user) { %>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i> <%= session.user.username %>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="/profile"><i class="fas fa-user-circle"></i> Hồ sơ</a></li>
+                                <li><a class="dropdown-item" href="/orders"><i class="fas fa-box"></i> Đơn hàng</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    <% } else { %>
+                        <a href="/auth/login" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                        <a href="/auth/register" class="btn btn-warning"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                    <% } %>
+                    
+                    <a href="/cart" class="btn btn-light ms-3 position-relative">
+                        <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <%= session.cart ? session.cart.length : 0 %>
+                        </span>
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Contact Form -->
+    <div class="container">
+        <div class="contact-container shadow-lg">
+            <h2 class="text-center mb-4">Liên hệ với chúng tôi</h2>
+
+            <% if (message) { %>
+                <div class="alert alert-success text-center">
+                    <i class="fas fa-check-circle"></i> <strong><%= message %></strong>
+                </div>
+            <% } %>
+
+            <form action="/contact" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label"><i class="fas fa-user"></i> Họ và tên</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label"><i class="fas fa-phone"></i> Số điện thoại</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required pattern="[0-9]{10,11}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label"><i class="fas fa-comment"></i> Nội dung</label>
+                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-paper-plane"></i> Gửi liên hệ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+<footer class="footer mt-5 py-4 text-white">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            <!-- Cột 1: Logo và giới thiệu -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">LazyIT</h5>
+                
+            </div>
+
+            <!-- Cột 2: Điều hướng -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">Điều hướng</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/about" class="footer-link">Giới thiệu</a></li>
+                    <li><a href="/product" class="footer-link">Sản phẩm</a></li>
+                    <li><a href="#" class="footer-link">Kinh nghiệm hay</a></li>
+                    <li><a href="/contact" class="footer-link">Liên hệ</a></li>
+                </ul>
+            </div>
+
+            <!-- Cột 3: Liên hệ & Mạng xã hội -->
+            <div class="col-md-4 mb-3">
+                <h5 class="fw-bold">Liên hệ</h5>
+                <p><i class="fas fa-envelope"></i> support@lazyit.com</p>
+                <p><i class="fas fa-phone"></i> 0987 654 321</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-3 border-light">
+        <div class="text-center">
+            <p class="mb-0">&copy; 2025 LazyIT - Tất cả quyền được bảo lưu.</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Màu nền gradient */
+    .footer {
+        background: linear-gradient(45deg, #FF5700, #FF8C00);
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Link footer có hiệu ứng khi hover */
+    .footer-link {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .footer-link:hover {
+        text-decoration: underline;
+        color: #FFD700; /* Màu vàng sáng */
+        letter-spacing: 1px;
+    }
+
+    /* Hiệu ứng icon mạng xã hội */
+    .social-icons {
+        margin-top: 10px;
+    }
+
+    .social-icon {
+        color: white;
+        margin-right: 15px;
+        font-size: 24px;
+        transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: scale(1.3) rotate(10deg);
+        color: #FFD700; /* Màu vàng nổi bật */
+        text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+    }
+</style>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<header>
+    <div class="logo">
+        <a href="/">Lazy</a>
+        <link rel="stylesheet" href="/product.css">
+    </div> 
+    
+    <nav>
+        <ul>
+            <li><a href="/about">Giới thiệu</a></li>
+            <li><a href="/product">Sản phẩm</a></li>
+            <li><a href="#">Kinh nghiệm hay</a></li>
+            <li><a href="/contact">Liên hệ</a></li>
+        </ul>
+    </nav>
+    <div class="user-actions">
+        <% if (session && session.user) { %>
+            <div class="user-menu">
+                <span id="username"><%= session.user ? session.user.username : 'Khách' %></span>
+                <ul id="user-options" class="hidden">
+                    <li><a href="/logout">Đăng xuất</a></li>
+                </ul>
+            </div>
+        <% } else { %>
+            <a href="/auth/login">Đăng nhập</a> /
+            <a href="/auth/register">Đăng ký</a>
+        <% } %>
+        <a href="/cart">Giỏ hàng</a>
+    </div>

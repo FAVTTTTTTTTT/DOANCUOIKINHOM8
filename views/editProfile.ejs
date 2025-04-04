@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cập nhật hồ sơ</title>
+  <style>
+    /* Định dạng chung */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Container */
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    /* Tiêu đề */
+    h2 {
+        color: #333;
+    }
+
+    /* Form */
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        text-align: left;
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    /* Các nút */
+    .btn {
+        display: inline-block;
+        padding: 10px;
+        margin: 10px 5px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    /* Nút cập nhật */
+    .btn-update {
+        background-color: #28a745;
+    }
+
+    /* Nút quay lại */
+    .btn-back {
+        background-color: #007bff;
+        display: block;
+        width: 150px;
+        margin: 10px auto;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Cập nhật hồ sơ</h2>
+    <form action="/profile/edit" method="POST">
+        <label>Tên đăng nhập:</label>
+        <input type="text" name="username" value="<%= user.username %>" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="<%= user.email %>" required>
+
+        <label>Số điện thoại:</label>
+        <input type="text" name="phone" value="<%= user.phone %>" required>
+
+        <button type="submit" class="btn btn-update">Cập nhật</button>
+    </form>
+    <a href="javascript:history.back()" class="btn btn-back">Quay lại</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giỏ hàng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    
+    <!-- Include HEADER -->
+    <header class="text-white p-3 shadow-sm" style="background-color: #FF5700;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="text-white text-decoration-none fs-4 fw-bold">LAZY</a>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="/about" class="nav-link text-white fs-5">Giới thiệu</a></li>
+                    <li class="nav-item"><a href="/products" class="nav-link text-white fs-5">Sản phẩm</a></li>
+                    <li class="nav-item"><a href="/chiase" class="nav-link text-white fs-5">Kinh nghiệm hay</a></li>
+                    <li class="nav-item"><a href="/contact" class="nav-link text-white fs-5">Liên hệ</a></li>
+                </ul>
+            </nav>
+            <div>
+
+                <div class="user-actions">
+                    <div class="d-flex align-items-center">
+                        <% if (session && session.user) { %>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle fw-bold" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> <%= session.user.username %>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="/profile"><i class="fas fa-user-circle"></i> Hồ sơ</a></li>
+                                    <li><a class="dropdown-item" href="/orders"><i class="fas fa-box"></i> Đơn hàng</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        <% } else { %>
+                            <a href="/auth/login" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                            <a href="/auth/register" class="btn btn-warning"><i class="fas fa-user-plus"></i> Đăng ký</a>
+                        <% } %>
+                        
+                        <a href="/cart" class="btn btn-light ms-3 position-relative">
+                            <i class="fas fa-shopping-cart"></i> Giỏ hàng
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <%= session.cart ? session.cart.length : 0 %>
+                            </span>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">🛒 Giỏ hàng của bạn</h2>
+
+        <% if (items.length === 0) { %>
+            <div class="alert alert-warning text-center">
+                <p>Giỏ hàng của bạn đang trống.</p>
+                <a href="/product" class="btn btn-primary">Mua sắm ngay</a>
+            </div>
+        <% } else { %>
+
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let totalPrice = 0; %>
+                    <% items.forEach(item => { %>
+                        <% let itemTotal = item.price * item.quantity; %>
+                        <% totalPrice += itemTotal; %>
+                        <tr>
+                            <td>
+                                <img src="<%= item.image %>" width="50" class="me-2">
+                                <%= item.name %>
+                            </td>
+                            <td><%= item.price.toLocaleString() %>₫</td>
+                            <td>
+                                <form action="/cart/update" method="POST" class="d-flex">
+                                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                                    <input type="number" name="quantity" value="<%= item.quantity %>" min="1" class="form-control w-50 me-2">
+                                    <button type="submit" class="btn btn-sm btn-primary">Cập nhật</button>
+                                </form>
+                            </td>
+                            <td><%= itemTotal.toLocaleString() %>₫</td>
+                            <td>
+                                <form action="/cart/remove" method="POST" class="d-inline">
+                                    <input type="hidden" name="productId" value="<%= item.productId %>">
+                                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+
+            <div class="text-end">
+                <h4>Tổng cộng: <strong><%= totalPrice.toLocaleString() %>₫</strong></h4>
+            </div>
+
+            <form action="/cart/checkout" method="POST" class="mt-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Họ và tên</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control" id="address" name="address" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Số điện thoại</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+                <button type="submit" class="btn btn-success">Thanh toán</button>
+            </form>
+
+        <% } %>
+
+        <a href="/product" class="btn btn-outline-primary mt-4">Tiếp tục mua sắm</a>
+    </div>
+
+    <!-- Include FOOTER -->
+    <footer class="footer mt-5 py-4 text-white">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <!-- Cột 1: Logo và giới thiệu -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">LazyIT</h5>
+                    
+                </div>
+    
+                <!-- Cột 2: Điều hướng -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Điều hướng</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="footer-link">Giới thiệu</a></li>
+                        <li><a href="/product" class="footer-link">Sản phẩm</a></li>
+                        <li><a href="#" class="footer-link">Kinh nghiệm hay</a></li>
+                        <li><a href="/contact" class="footer-link">Liên hệ</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Cột 3: Liên hệ & Mạng xã hội -->
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold">Liên hệ</h5>
+                    <p><i class="fas fa-envelope"></i> support@lazyit.com</p>
+                    <p><i class="fas fa-phone"></i> 0987 654 321</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3 border-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 LazyIT - Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <style>
+        /* Màu nền gradient */
+        .footer {
+            background: linear-gradient(45deg, #FF5700, #FF8C00);
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+    
+        /* Link footer có hiệu ứng khi hover */
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+    
+        .footer-link:hover {
+            text-decoration: underline;
+            color: #FFD700; /* Màu vàng sáng */
+            letter-spacing: 1px;
+        }
+    
+        /* Hiệu ứng icon mạng xã hội */
+        .social-icons {
+            margin-top: 10px;
+        }
+    
+        .social-icon {
+            color: white;
+            margin-right: 15px;
+            font-size: 24px;
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+        }
+    
+        .social-icon:hover {
+            transform: scale(1.3) rotate(10deg);
+            color: #FFD700; /* Màu vàng nổi bật */
+            text-shadow: 0px 0px 10px rgba(255, 215, 0, 0.8);
+        }
+    </style>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
